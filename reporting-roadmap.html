@@ -1,0 +1,978 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SW Recovery — Data Furnisher Reporting Roadmap</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+  :root {
+    --navy: #070731;
+    --navy-mid: #070b97;
+    --navy-light: #16225c;
+    --teal: #0495f1;
+    --teal-dim: #0446f1;
+    --amber: #f5a623;
+    --red: #e5464a;
+    --green: #2ec97e;
+    --blue: #4a90d9;
+    --white: #f7fafd;
+    --muted: #8fa5be;
+    --border: rgba(255,255,255,0.08);
+    --surface: rgba(255,255,255,0.04);
+    --surface-hover: rgba(255,255,255,0.07);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Fira Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0a1520 0%, #1a2e47 100%);
+    border-bottom: 1px solid var(--teal);
+    padding: 28px 40px 24px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .header-left { flex: 1; }
+  .header-logo {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 6px;
+    font-family: 'Fira Code', monospace;
+  }
+  .header-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.2;
+  }
+  .header-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .header-meta {
+    text-align: right;
+    font-size: 11px;
+    font-family: 'Fira Code', monospace;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .header-meta span { color: var(--white); }
+
+  /* NAV */
+  .nav {
+    background: var(--navy-mid);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    padding: 13px 18px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .15s;
+    font-family: 'Fira Sans', sans-serif;
+  }
+  .nav-btn:hover { color: var(--white); background: var(--surface); }
+  .nav-btn.active { color: var(--teal); border-bottom-color: var(--teal); }
+
+  /* LAYOUT */
+  .main { padding: 28px 40px; max-width: 1100px; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* SECTION */
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-family: 'Fira Code', monospace;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .mb { margin-bottom: 24px; }
+
+  /* ALERT BANNERS */
+  .alert {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    line-height: 1.55;
+    margin-bottom: 18px;
+    border-left: 3px solid;
+  }
+  .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .alert-red { background: rgba(229,70,74,0.1); border-color: var(--red); color: #f9b4b5; }
+  .alert-amber { background: rgba(245,166,35,0.1); border-color: var(--amber); color: #fbd48a; }
+  .alert-teal { background: rgba(0,196,160,0.1); border-color: var(--teal); color: #7eecd8; }
+  .alert-blue { background: rgba(74,144,217,0.1); border-color: var(--blue); color: #a0c8f0; }
+  .alert strong { color: var(--white); }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .dot-green { background: var(--green); }
+  .dot-red { background: var(--red); }
+  .dot-amber { background: var(--amber); }
+  .dot-blue { background: var(--blue); }
+  .dot-teal { background: var(--teal); }
+  .dot-gray { background: var(--muted); }
+
+  /* RULE ROWS */
+  .rule { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .rule:last-child { border-bottom: none; }
+  .rule-text { font-size: 12.5px; color: #b0c5d8; line-height: 1.5; }
+  .rule-text strong { color: var(--white); font-weight: 500; }
+  .rule-text code { font-family: 'Fira Code', monospace; font-size: 11px; background: rgba(0,196,160,0.12); color: var(--teal); padding: 1px 5px; border-radius: 3px; }
+
+  /* BADGES */
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-family: 'Fira Code', monospace;
+    letter-spacing: .03em;
+  }
+  .badge-green { background: rgba(46,201,126,0.15); color: var(--green); border: 1px solid rgba(46,201,126,0.3); }
+  .badge-red { background: rgba(229,70,74,0.15); color: #f28080; border: 1px solid rgba(229,70,74,0.3); }
+  .badge-amber { background: rgba(245,166,35,0.15); color: var(--amber); border: 1px solid rgba(245,166,35,0.3); }
+  .badge-blue { background: rgba(74,144,217,0.15); color: #7ab8f0; border: 1px solid rgba(74,144,217,0.3); }
+  .badge-teal { background: rgba(0,196,160,0.15); color: var(--teal); border: 1px solid rgba(0,196,160,0.3); }
+  .badge-gray { background: rgba(143,165,190,0.12); color: var(--muted); border: 1px solid rgba(143,165,190,0.2); }
+  .badge-navy { background: rgba(255,255,255,0.06); color: var(--white); border: 1px solid var(--border); }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  @media(max-width:700px){ .grid-2,.grid-3 { grid-template-columns: 1fr; } }
+
+  /* MASTER TABLE */
+  .master-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .master-table th {
+    text-align: left;
+    padding: 9px 12px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-family: 'Fira Code', monospace;
+    border-bottom: 1px solid var(--teal);
+    background: rgba(0,196,160,0.05);
+    white-space: nowrap;
+  }
+  .master-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    color: #b0c5d8;
+    vertical-align: top;
+    line-height: 1.45;
+  }
+  .master-table tr:hover td { background: var(--surface-hover); }
+  .master-table td strong { color: var(--white); font-weight: 500; }
+  .master-table td code { font-family: 'Fira Code', monospace; font-size: 10.5px; color: var(--teal); }
+
+  /* BUREAU COMPARE */
+  .bureau-split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:600px){ .bureau-split { grid-template-columns: 1fr; } }
+  .bureau-card {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .bureau-header {
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .bureau-header-exp { background: linear-gradient(90deg, #1a1060, #2d1a80); color: #b0a0f8; border-bottom: 2px solid #6050c0; }
+  .bureau-header-eq { background: linear-gradient(90deg, #0d2a1a, #0d3b22); color: #70d0a0; border-bottom: 2px solid #1a8050; }
+  .bureau-body { padding: 14px 16px; background: var(--surface); }
+
+  /* TIMELINE */
+  .tl-item { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-num { font-family: 'Fira Code', monospace; font-size: 11px; font-weight: 600; color: var(--teal); min-width: 28px; padding-top: 2px; }
+  .tl-content { flex: 1; }
+  .tl-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+  .tl-body { font-size: 12px; color: #8fa5be; line-height: 1.5; }
+  .tl-body strong { color: #d0dff0; font-weight: 500; }
+
+  /* STATE TABLE */
+  .state-scroll { overflow-x: auto; }
+  .state-tbl { width: 100%; border-collapse: collapse; font-size: 11.5px; min-width: 700px; }
+  .state-tbl th {
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-family: 'Fira Code', monospace;
+    border-bottom: 1px solid var(--teal);
+    background: rgba(0,196,160,0.05);
+    white-space: nowrap;
+  }
+  .state-tbl td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    color: #b0c5d8;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .state-tbl tr:hover td { background: var(--surface-hover); }
+  .state-tbl td strong { color: var(--white); }
+
+  /* CLOCK CARDS */
+  .clock-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .clock-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .clock-industry {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-family: 'Fira Code', monospace;
+    margin-bottom: 8px;
+    color: var(--teal);
+  }
+  .clock-num { font-size: 28px; font-weight: 600; color: var(--white); line-height: 1; }
+  .clock-unit { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+  .clock-note { font-size: 11.5px; color: #8fa5be; line-height: 1.45; }
+  .clock-note strong { color: #c0d4e8; font-weight: 500; }
+  .clock-flag {
+    display: inline-block;
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-family: 'Fira Code', monospace;
+    font-weight: 600;
+    letter-spacing: .05em;
+    margin-top: 6px;
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 40px;
+    padding: 20px 40px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'Fira Code', monospace;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* SCROLL HINT */
+  .scroll-hint { font-size: 10px; color: var(--muted); font-family: 'Fira Code', monospace; margin-bottom: 8px; }
+
+  /* PILL ROW */
+  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .pill {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-family: 'Fira Code', monospace;
+    font-weight: 500;
+  }
+  .pill-green { background: rgba(46,201,126,0.1); color: var(--green); border: 1px solid rgba(46,201,126,0.25); }
+  .pill-red { background: rgba(229,70,74,0.1); color: #f28080; border: 1px solid rgba(229,70,74,0.25); }
+  .pill-amber { background: rgba(245,166,35,0.1); color: var(--amber); border: 1px solid rgba(245,166,35,0.25); }
+  .pill-gray { background: rgba(143,165,190,0.08); color: var(--muted); border: 1px solid rgba(143,165,190,0.18); }
+
+  /* STEP */
+  .step-row { display: flex; gap: 0; margin-bottom: 20px; flex-wrap: nowrap; overflow-x: auto; }
+  .step-block {
+    flex: 1;
+    min-width: 120px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-right: none;
+    padding: 12px 14px;
+    font-size: 11.5px;
+    color: #8fa5be;
+    line-height: 1.45;
+    position: relative;
+  }
+  .step-block:first-child { border-radius: 8px 0 0 8px; }
+  .step-block:last-child { border-right: 1px solid var(--border); border-radius: 0 8px 8px 0; }
+  .step-block-num { font-size: 10px; font-weight: 600; color: var(--teal); font-family: 'Fira Code', monospace; margin-bottom: 4px; letter-spacing: .06em; }
+  .step-block-title { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <img src="/swrs-logo-white.svg" alt="Southwest Recovery Services" style="height:22px;width:auto;display:block;margin-bottom:8px;"><div class="header-logo">Internal Sales Resource</div>
+    <div class="header-title">Data Furnisher Reporting Roadmap</div>
+    <div class="header-sub">What can be reported, to whom, when, and by what rules — Experian &amp; CSC Equifax</div>
+  </div>
+  <div class="header-meta">
+    Updated <span>July 2026</span><br>
+    Sources <span>FCRA · NCAP · HIPAA · State Law</span><br>
+    Bureaus <span>Experian · CSC Equifax</span>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="showPanel('matrix')">Master matrix</button>
+  <button class="nav-btn" onclick="showPanel('timing')">Reporting timing</button>
+  <button class="nav-btn" onclick="showPanel('cannot')">Cannot report</button>
+  <button class="nav-btn" onclick="showPanel('bureaus')">Bureau rules</button>
+  <button class="nav-btn" onclick="showPanel('states')">State restrictions</button>
+  <button class="nav-btn" onclick="showPanel('process')">Onboarding & process</button>
+</div>
+
+<div class="main">
+
+<!-- ═══════════════════════════ MASTER MATRIX ═══════════════════════════ -->
+<div class="panel active" id="matrix">
+  <div class="section-label">Master reporting matrix — can it be reported?</div>
+
+  <div class="alert alert-amber">
+    <span class="alert-icon">⚠</span>
+    <div><strong>How to use this table:</strong> Green = reportable today under current rules. Amber = conditional — specific rules apply before reporting. Red = cannot be reported to the big-3 consumer CRAs. Always cross-reference the state the consumer resides in before reporting any account.</div>
+  </div>
+
+  <div class="scroll-hint">→ Scroll right if columns are cut off</div>
+  <div style="overflow-x:auto">
+  <table class="master-table">
+    <thead>
+      <tr>
+        <th>Debt / account type</th>
+        <th>Experian</th>
+        <th>CSC Equifax</th>
+        <th>FCRA time limit</th>
+        <th>Wait before reporting</th>
+        <th>Key conditions</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td><strong>Credit card — consumer</strong></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td>7 yrs from DOFD</td>
+        <td>None — report at first delinquency</td>
+        <td>Original creditor name + type required. Update monthly.</td>
+      </tr>
+      <tr>
+        <td><strong>Auto loan / lease</strong></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td>7 yrs from DOFD</td>
+        <td>None</td>
+        <td>Report deficiency balance post-repossession. Include DOFD within 90 days.</td>
+      </tr>
+      <tr>
+        <td><strong>Personal loan / installment</strong></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td>7 yrs from DOFD</td>
+        <td>None</td>
+        <td>Confirm contractual basis. Payday loans are accepted but check state usury laws.</td>
+      </tr>
+      <tr>
+        <td><strong>Mortgage / HELOC</strong></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td>7 yrs from DOFD</td>
+        <td>None</td>
+        <td>Report deficiency after foreclosure or short sale. Include DOFD.</td>
+      </tr>
+      <tr>
+        <td><strong>Student loan — federal</strong></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td>7 yrs from DOFD</td>
+        <td>None — but CARES Act COVID rules applied through 2022</td>
+        <td>HEA §1080a requires federal student loan servicers to report to all 3 nationwide CRAs monthly. SAVE Plan court order (Mar 2026) — DOE collection status changing; monitor.</td>
+      </tr>
+      <tr>
+        <td><strong>Student loan — private</strong></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td>7 yrs from DOFD</td>
+        <td>None</td>
+        <td>Standard collection tradeline. Include original creditor (private lender name).</td>
+      </tr>
+      <tr>
+        <td><strong>Medical debt (standard)</strong></td>
+        <td><span class="badge badge-amber">CONDITIONAL</span></td>
+        <td><span class="badge badge-amber">CONDITIONAL</span></td>
+        <td>7 yrs from DOFD</td>
+        <td><strong>1 year from DOFD</strong> — NCAP insurance/dispute resolution buffer (increased from 180 days, eff. July 1, 2022)</td>
+        <td>Paid medical debt: remove immediately. Under $500: removed by big-3 voluntarily. Register as medical information furnisher. Encode provider per FCRA §605(a)(6). 15 states ban or limit — see State tab.</td>
+      </tr>
+      <tr>
+        <td><strong>Medical — paid in full</strong></td>
+        <td><span class="badge badge-red">REMOVE</span></td>
+        <td><span class="badge badge-red">REMOVE</span></td>
+        <td>—</td>
+        <td>Must be deleted immediately upon payment</td>
+        <td>NCAP and all three bureau policies. Report deletion upon receipt of payment confirmation.</td>
+      </tr>
+      <tr>
+        <td><strong>Medical — under $500</strong></td>
+        <td><span class="badge badge-red">EXCLUDED</span></td>
+        <td><span class="badge badge-red">EXCLUDED</span></td>
+        <td>—</td>
+        <td>Not accepted by big-3 per voluntary bureau policy</td>
+        <td>Big-3 voluntarily removed all medical collections under $500 in 2023. Do not submit — will be rejected or purged.</td>
+      </tr>
+      <tr>
+        <td><strong>Medical debt in ban states</strong></td>
+        <td><span class="badge badge-red">DO NOT REPORT</span></td>
+        <td><span class="badge badge-red">DO NOT REPORT</span></td>
+        <td>—</td>
+        <td>Prohibited by state law</td>
+        <td>CA, CO, CT, DE, IL, ME, MD, MN, NJ, NY, OR, RI, VT, VA, WA — see State tab. Legal uncertainty due to Oct 2025 CFPB preemption rule but state laws remain on books.</td>
+      </tr>
+      <tr>
+        <td><strong>Utility — electric, gas, water</strong></td>
+        <td><span class="badge badge-amber">CONDITIONAL</span></td>
+        <td><span class="badge badge-amber">CONDITIONAL</span></td>
+        <td>7 yrs from DOFD</td>
+        <td>Varies — some bureaus require 90+ days past due</td>
+        <td>Must arise from a service agreement / contract. Not all utility companies report. Some states have low-income disconnection protections that affect collectability. Original creditor name required.</td>
+      </tr>
+      <tr>
+        <td><strong>Telecommunications (wireless/cable)</strong></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td>7 yrs from DOFD</td>
+        <td>None typically</td>
+        <td>Strong contract basis. Include original creditor. Early termination fees are contractual — reportable.</td>
+      </tr>
+      <tr>
+        <td><strong>Rent / lease arrears</strong></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td>7 yrs from DOFD</td>
+        <td>None — lease is a contract</td>
+        <td>Rental arrears are contractual debt. Equifax has specific rental data reporting policies. Include original creditor. Eviction judgments not on big-3 credit reports (NCAP) but debt remains reportable.</td>
+      </tr>
+      <tr>
+        <td><strong>HOA / condo assessments</strong></td>
+        <td><span class="badge badge-amber">CONDITIONAL</span></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td>7 yrs from DOFD</td>
+        <td>Per bureau policy — confirm before reporting</td>
+        <td>Assessments are consumer debts — reportable. <strong>HOA fines and penalties are NOT</strong> — non-contractual. Only Equifax confirmed acceptance of HOA assessment data. Verify Experian acceptance separately for your portfolio.</td>
+      </tr>
+      <tr>
+        <td><strong>Government / municipal fines (parking, traffic)</strong></td>
+        <td><span class="badge badge-red">DO NOT REPORT</span></td>
+        <td><span class="badge badge-red">DO NOT REPORT</span></td>
+        <td>—</td>
+        <td>Prohibited — non-contractual</td>
+        <td>NCAP 2015: debts not arising from a contract or agreement to pay cannot appear on credit reports. Parking tickets, speeding tickets, court fees, library fines all excluded. Experian policy predates NCAP.</td>
+      </tr>
+      <tr>
+        <td><strong>Civil judgment</strong></td>
+        <td><span class="badge badge-red">DO NOT REPORT</span></td>
+        <td><span class="badge badge-red">DO NOT REPORT</span></td>
+        <td>7 yrs per FCRA (but moot)</td>
+        <td>Not accepted — NCAP/bureau policy</td>
+        <td>Removed July 2017 / April 2018. 96% of civil judgments lacked required SSN/DOB PII. Judgment still enforceable via wage garnishment and bank levy — see enforcement tab. Underlying collection debt still reports normally.</td>
+      </tr>
+      <tr>
+        <td><strong>Tax lien (civil / state)</strong></td>
+        <td><span class="badge badge-red">DO NOT REPORT</span></td>
+        <td><span class="badge badge-red">DO NOT REPORT</span></td>
+        <td>7 yrs (paid) per FCRA</td>
+        <td>Not accepted — NCAP 2017</td>
+        <td>Removed 2017. ~50% lacked SSN/DOB PII. IRS tax liens may appear via other specialty CRAs but not consumer credit reports from big-3.</td>
+      </tr>
+      <tr>
+        <td><strong>Bankruptcy (Ch. 7)</strong></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td>10 yrs from filing date</td>
+        <td>FCRA sets 10-year clock</td>
+        <td>Only public record still reported by big-3 after NCAP. Freeze all collection reporting on accounts included in BK until discharge or dismissal. Note case number when consumer discloses filing.</td>
+      </tr>
+      <tr>
+        <td><strong>Bankruptcy (Ch. 13)</strong></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td>7 yrs from filing date</td>
+        <td>—</td>
+        <td>7-year clock (not 10). Cease all collection activity on filed accounts — automatic stay.</td>
+      </tr>
+      <tr>
+        <td><strong>Charged-off accounts</strong></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td><span class="badge badge-green">REPORT</span></td>
+        <td>7 yrs from DOFD</td>
+        <td>None — report at charge-off</td>
+        <td>Report as "charged off." Continue reporting monthly until removed. DOFD does not reset at charge-off date — use original DOFD from creditor.</td>
+      </tr>
+      <tr>
+        <td><strong>Gym / membership fees (original creditor)</strong></td>
+        <td><span class="badge badge-amber">CONDITIONAL</span></td>
+        <td><span class="badge badge-red">NOT ACCEPTED</span></td>
+        <td>7 yrs from DOFD (once placed)</td>
+        <td>None once placed with a collector</td>
+        <td>Equifax's own furnisher FAQ explicitly excludes "future services" data (names gym memberships) from <strong>original-creditor</strong> furnishing — gyms cannot self-furnish open membership accounts. Experian's furnisher materials only say generically that "certain types of data" aren't accepted, without naming this example — do not assume identical scope. <strong>Once assigned to a third-party collection agency, the debt is furnished as an ordinary collection tradeline (not "future services") and is routinely accepted by both bureaus</strong> — this is why placement with SW Recovery, not self-furnishing, is the path to reportability.</td>
+      </tr>
+      <tr>
+        <td><strong>Buy Now Pay Later (BNPL)</strong></td>
+        <td><span class="badge badge-amber">CONDITIONAL</span></td>
+        <td><span class="badge badge-amber">CONDITIONAL</span></td>
+        <td>7 yrs from DOFD</td>
+        <td>Limited bureau acceptance — verify</td>
+        <td>Most BNPL loans are not included in standard credit reports. Reporting is evolving — some major BNPL providers now report. Collection on BNPL default is reportable as a standard collection tradeline.</td>
+      </tr>
+      <tr>
+        <td><strong>Child support / alimony</strong></td>
+        <td><span class="badge badge-amber">CONDITIONAL</span></td>
+        <td><span class="badge badge-amber">CONDITIONAL</span></td>
+        <td>7 yrs from DOFD</td>
+        <td>Only if court-ordered and in arrears</td>
+        <td>Court-ordered domestic support obligations are reportable as collections when past due. Wage garnishment for child support operates differently — exempt from CCPA limits. Must have court order verification.</td>
+      </tr>
+      <tr>
+        <td><strong>"Pay for tradeline" services</strong></td>
+        <td><span class="badge badge-red">PROHIBITED</span></td>
+        <td><span class="badge badge-red">PROHIBITED</span></td>
+        <td>—</td>
+        <td>—</td>
+        <td>Both Experian and Equifax explicitly prohibit furnishers who report "pay for tradeline" schemes. Violates data integrity standards.</td>
+      </tr>
+      <tr>
+        <td><strong>Self-reported tradelines</strong></td>
+        <td><span class="badge badge-red">PROHIBITED</span></td>
+        <td><span class="badge badge-red">PROHIBITED</span></td>
+        <td>—</td>
+        <td>—</td>
+        <td>Neither bureau accepts furnishers reporting tradelines on themselves.</td>
+      </tr>
+
+    </tbody>
+  </table>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ TIMING ═══════════════════════════ -->
+<div class="panel" id="timing">
+  <div class="section-label">Reporting timing rules — when to report &amp; how long it stays</div>
+
+  <div class="alert alert-teal">
+    <span class="alert-icon">ℹ</span>
+    <div><strong>Two separate clocks run simultaneously:</strong> (1) when you <em>can first report</em> an account (waiting period), and (2) how long negative info <em>stays on the report</em> (FCRA obsolescence). Both must be tracked independently per account.</div>
+  </div>
+
+  <div class="section-label mb">Waiting periods before first report — by industry</div>
+  <div class="clock-grid">
+
+    <div class="clock-card">
+      <div class="clock-industry">Credit Cards / Loans</div>
+      <div class="clock-num">0</div>
+      <div class="clock-unit">day waiting period</div>
+      <div class="clock-note">Can report at <strong>first delinquency</strong>. Include DOFD in submission. Must provide negative information notice to consumer within 30 days of first reporting.</div>
+      <div class="clock-flag badge badge-green">NO WAIT</div>
+    </div>
+
+    <div class="clock-card">
+      <div class="clock-industry">Medical Debt</div>
+      <div class="clock-num">1</div>
+      <div class="clock-unit">year from date of service/DOFD</div>
+      <div class="clock-note">Increased from 180 days (6 months) to <strong>one full year</strong>, effective July 1, 2022, per joint Equifax/Experian/TransUnion policy. Do not report before the 1-year mark. Verify insurance status before placement. Remove immediately upon payment.</div>
+      <div class="clock-flag badge badge-amber">WAIT REQUIRED</div>
+    </div>
+
+    <div class="clock-card">
+      <div class="clock-industry">Telecom / Cable</div>
+      <div class="clock-num">0–30</div>
+      <div class="clock-unit">days — check bureau policy</div>
+      <div class="clock-note">Contractual basis strong. Most bureaus accept at first delinquency. <strong>Verify Experian and Equifax specific intake requirements</strong> at onboarding for your account type.</div>
+      <div class="clock-flag badge badge-green">NEAR IMMEDIATE</div>
+    </div>
+
+    <div class="clock-card">
+      <div class="clock-industry">Utilities</div>
+      <div class="clock-num">90+</div>
+      <div class="clock-unit">days past due (typical)</div>
+      <div class="clock-note">Many bureaus require <strong>90 days past due</strong> before accepting utility collections. Confirm with your Experian/Equifax data rep at portfolio setup.</div>
+      <div class="clock-flag badge badge-amber">WAIT LIKELY</div>
+    </div>
+
+    <div class="clock-card">
+      <div class="clock-industry">Rent / Lease</div>
+      <div class="clock-num">0</div>
+      <div class="clock-unit">day waiting period</div>
+      <div class="clock-note">Lease is a contract — reportable at first delinquency. Equifax has specific rental reporting policies. Note: eviction judgments no longer on reports, but lease debt is.</div>
+      <div class="clock-flag badge badge-green">NO WAIT</div>
+    </div>
+
+    <div class="clock-card">
+      <div class="clock-industry">Student Loans (Federal)</div>
+      <div class="clock-num">270</div>
+      <div class="clock-unit">days (9 months to default)</div>
+      <div class="clock-note">Federal student loans enter default at 270 days past due under HEA. DOE servicers must report monthly. SAVE Plan litigation (Mar 2026) — monitor DOE guidance on collection resumption.</div>
+      <div class="clock-flag badge badge-amber">STATUTORY WAIT</div>
+    </div>
+
+    <div class="clock-card">
+      <div class="clock-industry">Auto Deficiency</div>
+      <div class="clock-num">0</div>
+      <div class="clock-unit">post-repossession</div>
+      <div class="clock-note">Report deficiency balance after repossession and auction. Use original DOFD (first missed payment), not the repo date. Repo date does not reset the 7-year clock.</div>
+      <div class="clock-flag badge badge-green">REPORT IMMEDIATELY</div>
+    </div>
+
+    <div class="clock-card">
+      <div class="clock-industry">HOA Assessments</div>
+      <div class="clock-num">30–60</div>
+      <div class="clock-unit">days past due (confirm)</div>
+      <div class="clock-note">Assessment arrears are contractual. Verify Equifax acceptance in your member agreement. <strong>HOA fines/penalties: never report</strong> — non-contractual and will be rejected.</div>
+      <div class="clock-flag badge badge-amber">CONFIRM FIRST</div>
+    </div>
+
+  </div>
+
+  <div class="section-label mb" style="margin-top:28px">How long does it stay — FCRA obsolescence clocks</div>
+
+  <table class="master-table">
+    <thead>
+      <tr>
+        <th>Item type</th>
+        <th>FCRA max on report</th>
+        <th>Clock starts</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>Most negative items (collections, charge-offs, late pays)</strong></td><td><span class="badge badge-amber">7 years</span></td><td>Date of First Delinquency (DOFD)</td><td>DOFD is frozen at original delinquency — never re-ages. Must be reported to CRA within 90 days of placement.</td></tr>
+      <tr><td><strong>Chapter 7 bankruptcy</strong></td><td><span class="badge badge-red">10 years</span></td><td>Filing date</td><td>Longest FCRA retention period. Only public record still reported by big-3 after NCAP.</td></tr>
+      <tr><td><strong>Chapter 13 bankruptcy</strong></td><td><span class="badge badge-amber">7 years</span></td><td>Filing date</td><td>7-year clock — shorter than Ch. 7. Consumer is in repayment plan.</td></tr>
+      <tr><td><strong>Medical debt (unpaid, &gt;$500)</strong></td><td><span class="badge badge-amber">7 years from DOFD</span></td><td>DOFD (after 1-year wait)</td><td>Cannot appear before 1 year from date of service (increased from 180 days, eff. July 1, 2022). Remove upon payment. State bans may apply.</td></tr>
+      <tr><td><strong>Civil judgment</strong></td><td>7 yrs per FCRA — but <span class="badge badge-red">BUREAU POLICY REMOVES</span></td><td>Entry date (FCRA) — moot</td><td>FCRA still allows it, but all three major bureaus removed them in 2017–2018 due to NCAP accuracy standards. Underlying collection account still reports separately on its own 7-year clock.</td></tr>
+      <tr><td><strong>Tax lien (unpaid)</strong></td><td>7 yrs per FCRA — but <span class="badge badge-red">BUREAU POLICY REMOVES</span></td><td>File date — moot</td><td>Removed per NCAP 2017. Required SSN/DOB not available in most tax lien filings.</td></tr>
+      <tr><td><strong>Collections updated regularly</strong></td><td>7 yrs from DOFD</td><td>DOFD</td><td>NCAP: collections not updated for &gt;6 months may be purged by CRAs proactively — must report monthly to maintain the tradeline.</td></tr>
+      <tr><td><strong>Collections under $100</strong></td><td>Ignored by FICO 8, 9, 10</td><td>—</td><td>Still technically reportable, but FICO scoring models ignore them. Minimal collection leverage; evaluate ROI before reporting.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="card" style="margin-top:18px">
+    <div class="card-title"><div class="card-dot dot-teal"></div> The DOFD rule — the most important single field in your Metro 2 file</div>
+    <div class="rule"><span class="badge badge-red">RULE</span><div class="rule-text"><strong>DOFD must reflect the original delinquency</strong> — the month and year the consumer first went delinquent before the account was placed for collection, charged off, or subjected to similar action. This is the date from the original creditor.</div></div>
+    <div class="rule"><span class="badge badge-red">RULE</span><div class="rule-text"><strong>You have 90 days</strong> after first reporting a delinquent/collection account to provide the DOFD to the CRA. If you can't get it from the original creditor, use reasonable procedures to estimate — but never use a date after the placement date.</div></div>
+    <div class="rule"><span class="badge badge-red">RULE</span><div class="rule-text"><strong>Re-aging is never permitted.</strong> You cannot reset the DOFD when an account is sold, transferred, or re-placed. The original DOFD follows the account forever. Re-aging is a direct FCRA violation and triggers private litigation.</div></div>
+    <div class="rule"><span class="badge badge-green">PRACTICE</span><div class="rule-text">Include DOFD in your initial Metro 2 file submission — do not wait for the 90-day deadline. Bureau data analysts may flag incomplete submissions for correction.</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ CANNOT REPORT ═══════════════════════════ -->
+<div class="panel" id="cannot">
+  <div class="section-label">What cannot be reported — absolute prohibitions</div>
+
+  <div class="alert alert-red">
+    <span class="alert-icon">✕</span>
+    <div><strong>Reporting any of the items below is a direct FCRA violation</strong> or will be rejected outright by the bureau. Both carry liability. Willful violations entitle consumers to actual + punitive damages plus attorney fees.</div>
+  </div>
+
+  <div class="grid-2">
+
+    <div>
+      <div class="card">
+        <div class="card-title"><div class="card-dot dot-red"></div> Federal absolute prohibitions</div>
+        <div class="rule"><span class="badge badge-red">FCRA</span><div class="rule-text"><strong>Inaccurate or unverifiable data</strong> — Illegal to report data you know or have reason to believe is inaccurate. If investigation can't verify → must delete, not re-report.</div></div>
+        <div class="rule"><span class="badge badge-red">FCRA</span><div class="rule-text"><strong>Time-barred items</strong> — Any negative item beyond its FCRA obsolescence window (7 or 10 years). Check DOFD before every submission cycle.</div></div>
+        <div class="rule"><span class="badge badge-red">FCRA</span><div class="rule-text"><strong>Identity theft accounts</strong> — If a CRA notifies you that a reported account is blocked due to ID theft, you cannot re-report it unless you verify with 100% confidence it is correct. Cannot sell, transfer, or place that debt for collection either.</div></div>
+        <div class="rule"><span class="badge badge-red">FCRA</span><div class="rule-text"><strong>Re-aged accounts</strong> — Cannot reset the DOFD. Selling or re-placing an account does not restart the 7-year clock.</div></div>
+        <div class="rule"><span class="badge badge-red">ECOA/FCRA</span><div class="rule-text"><strong>Discriminatory reporting</strong> — Cannot treat accounts differently based on race, color, religion, national origin, sex, marital status, age, or receipt of public assistance income.</div></div>
+        <div class="rule"><span class="badge badge-red">HIPAA</span><div class="rule-text"><strong>Medical PHI beyond minimum necessary</strong> — Diagnoses, procedure codes, treatment notes, or any data that identifies the specific provider or service. Psychotherapy notes: absolute prohibition under any circumstance.</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="card-dot dot-red"></div> NCAP bureau-policy prohibitions (all three major bureaus)</div>
+        <div class="rule"><span class="badge badge-red">NCAP</span><div class="rule-text"><strong>Civil judgments</strong> — Removed April 2018. Not accepted. 96% lacked required SSN/DOB PII. Enforcement still available via wage garnishment and bank levy.</div></div>
+        <div class="rule"><span class="badge badge-red">NCAP</span><div class="rule-text"><strong>Tax liens</strong> — Removed July 2017. ~50% lacked PII. State and IRS tax liens no longer on consumer reports from big-3.</div></div>
+        <div class="rule"><span class="badge badge-red">NCAP</span><div class="rule-text"><strong>Non-contractual debts</strong> — Parking tickets, speeding tickets, library fines, court fees, municipal violations. Not arising from a voluntary agreement to pay = not reportable.</div></div>
+        <div class="rule"><span class="badge badge-red">NCAP</span><div class="rule-text"><strong>Medical collections under $500</strong> — Voluntarily removed by all three bureaus in 2023. Submissions will be rejected or purged.</div></div>
+        <div class="rule"><span class="badge badge-red">NCAP</span><div class="rule-text"><strong>Paid medical debt</strong> — Must be removed immediately upon confirmation of payment. NCAP policy since 2017.</div></div>
+        <div class="rule"><span class="badge badge-red">NCAP</span><div class="rule-text"><strong>Stale collections (6+ months inactive)</strong> — CRAs proactively purge collection tradelines not updated for more than 6 months. Monthly reporting is mandatory to maintain any tradeline.</div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title"><div class="card-dot dot-red"></div> Bureau-specific rejections</div>
+        <div class="rule"><span class="badge badge-red">EQUIFAX</span><div class="rule-text"><strong>Pay-for-tradeline schemes</strong> — Explicitly prohibited per Equifax's published commercial furnishing requirements. Account terminated on discovery. Experian's furnisher materials contain a general "certain types of data not accepted" disclaimer but do not publish this example by name — treat as prohibited across both as a matter of practice.</div></div>
+        <div class="rule"><span class="badge badge-red">EQUIFAX</span><div class="rule-text"><strong>Self-reported tradelines</strong> — Furnishers reporting tradelines on themselves are explicitly barred per Equifax's published requirements. Not separately confirmed in Experian's public materials, though the same practice risk applies.</div></div>
+        <div class="rule"><span class="badge badge-red">EQUIFAX</span><div class="rule-text"><strong>Future-services debts</strong> — Gym memberships, subscription pre-payments, and other future-services-based data are explicitly named as not accepted in Equifax's own data furnisher FAQ. Experian's furnisher materials only state generically that "certain types of data" are not accepted, without naming examples — do not assume Experian's exclusion list mirrors Equifax's exactly. Note: this exclusion applies to <em>original-creditor</em> furnishing; once assigned to a third-party collector, the debt is furnished as an ordinary collection tradeline and is not subject to this exclusion (see Collections tab).</div></div>
+        <div class="rule"><span class="badge badge-red">EQUIFAX</span><div class="rule-text"><strong>Submissions missing original creditor name</strong> — Per NCAP, original creditor name and Creditor Classification Code are mandatory fields. Missing = rejection.</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="card-dot dot-amber"></div> Conditionally prohibited — state law bans</div>
+        <div class="rule"><span class="badge badge-amber">15 STATES</span><div class="rule-text"><strong>Medical debt in ban states</strong> — CA, CO, CT, DE, IL, ME, MD, MN, NJ, NY, OR, RI, VT, VA, WA. Do not furnish medical accounts where consumer's address is in a ban state. Track consumer address carefully.</div></div>
+        <div class="rule"><span class="badge badge-amber">SUD ACCOUNTS</span><div class="rule-text"><strong>Substance use disorder records (42 CFR Part 2)</strong> — From federally-assisted SUD programs, require specific patient authorization naming the recipient before any disclosure. General BAA is not sufficient.</div></div>
+        <div class="rule"><span class="badge badge-amber">PSYCHOTHERAPY</span><div class="rule-text"><strong>Psychotherapy notes</strong> — HIPAA absolute prohibition. Accounts where the only validation data involves psychotherapy notes cannot be placed for collection or reported.</div></div>
+        <div class="rule"><span class="badge badge-amber">NO SURPRISES ACT</span><div class="rule-text"><strong>Surprise medical bills</strong> — The No Surprises Act (eff. Jan 2022) bars surprise billing for certain out-of-network emergency services. If a debt collector reports or tries to collect a debt barred by the No Surprises Act, it may violate FCRA or FDCPA. Verify the underlying debt's validity before reporting.</div></div>
+        <div class="rule"><span class="badge badge-amber">BANKRUPTCY</span><div class="rule-text"><strong>Active bankruptcy accounts</strong> — Once a consumer files and discloses their case number, all collection reporting activity on included accounts pauses under the automatic stay until discharge or dismissal.</div></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ═══════════════════════════ BUREAUS ═══════════════════════════ -->
+<div class="panel" id="bureaus">
+  <div class="section-label">Bureau-specific rules — Experian vs. CSC Equifax</div>
+
+  <div class="alert alert-blue">
+    <span class="alert-icon">ℹ</span>
+    <div><strong>Both bureaus share FCRA and NCAP obligations</strong> — but they have different technical formats, minimum account thresholds, portal systems, and data acceptance policies. Each bureau requires a separate Data Furnisher / Member Agreement. Maintain separate submissions for each.</div>
+  </div>
+
+  <div class="bureau-split">
+    <div class="bureau-card">
+      <div class="bureau-header bureau-header-exp">⬡ Experian</div>
+      <div class="bureau-body">
+        <div class="rule"><span class="badge badge-teal">FORMAT</span><div class="rule-text">Metro 2® format only. Electronic submission via secure FTP or HTTPS.</div></div>
+        <div class="rule"><span class="badge badge-teal">REPORTING</span><div class="rule-text">Full portfolio monthly — all current, delinquent, and charged-off accounts. No skipping cycles.</div></div>
+        <div class="rule"><span class="badge badge-teal">DISPUTES</span><div class="rule-text">e-OSCAR required — register at e-Oscar.org. Used for consumer disputes and off-cycle updates (AUDs).</div></div>
+        <div class="rule"><span class="badge badge-teal">PORTAL</span><div class="rule-text">FurnisherHub — furnisherhub.experian.com. Primary portal for file submissions and interaction with Experian data team.</div></div>
+        <div class="rule"><span class="badge badge-teal">ONBOARD</span><div class="rule-text">Call 1-800-831-5614, select option 3. Or submit form at experian.com/business. Specify account types: Collections, specify medical if applicable.</div></div>
+        <div class="rule"><span class="badge badge-teal">MEDICAL</span><div class="rule-text">Must register as "medical information furnisher" per FCRA §623(a)(9) before first medical submission. Encode provider name using Metro 2 Creditor Classification code <code>02</code>.</div></div>
+        <div class="rule"><span class="badge badge-teal">NON-CONTRACT</span><div class="rule-text">Policy predates NCAP — Experian has never accepted non-contractual debts (fines, tickets, library fees) as furnished tradelines. <span style="color:var(--amber)">Caveat:</span> Experian's own consumer-facing content notes small non-contractual collections (e.g., parking tickets) can still appear if sent to collections and the balance exceeds $100 — treat as a data point to verify per account, not a guarantee of exclusion.</div></div>
+        <div class="rule"><span class="badge badge-amber">WATCH</span><div class="rule-text">CFPB has active lawsuit against Experian (2025) alleging failure to investigate disputes. Increased scrutiny on all furnisher dispute handling practices.</div></div>
+      </div>
+    </div>
+
+    <div class="bureau-card">
+      <div class="bureau-header bureau-header-eq">◉ CSC Equifax</div>
+      <div class="bureau-body">
+        <div class="rule"><span class="badge badge-green">FORMAT</span><div class="rule-text">Metro 2® format for financial institutions. Non-financial contributors must use Equifax's standard commercial layout template — Metro 2 <em>not accepted</em> for non-financial.</div></div>
+        <div class="rule"><span class="badge badge-green">REPORTING</span><div class="rule-text">Full portfolio monthly (preferred). Exception: banks reporting SBA loans only without receiving Equifax solutions.</div></div>
+        <div class="rule"><span class="badge badge-green">DISPUTES</span><div class="rule-text">e-OSCAR required for consumer disputes. AUDs processed through e-OSCAR with Equifax Reporting Member Number as subscriber code.</div></div>
+        <div class="rule"><span class="badge badge-green">MIN ACCOUNTS</span><div class="rule-text">Fewer than 500 records/month: must subscribe to Automated Data View ($50/month) — allows furnisher to review tradeline as it appears on Equifax report. Licensed lenders: no minimum. Non-licensed: 1,000 records minimum (commercial).</div></div>
+        <div class="rule"><span class="badge badge-green">MEMBER NUMBER</span><div class="rule-text">Must be assigned an Equifax Reporting Member Number (also called Subscriber Code) confirming successful credentialing before first submission.</div></div>
+        <div class="rule"><span class="badge badge-green">HOA DATA</span><div class="rule-text">Equifax explicitly accepts HOA/condo association assessment data for delinquent accounts. Assessments only — fines/penalties not accepted.</div></div>
+        <div class="rule"><span class="badge badge-green">COMMERCIAL</span><div class="rule-text">Equifax maintains a separate commercial credit reporting division. Commercial data: standard commercial layout template (Metro 2 not accepted for commercial non-financial).</div></div>
+        <div class="rule"><span class="badge badge-red">EXCLUDED</span><div class="rule-text">Future services data (gym memberships). Self-reported tradelines. Pay-for-tradeline furnishers. All explicitly rejected.</div></div>
+        <div class="rule"><span class="badge badge-red">NOT ACCEPTED</span><div class="rule-text">Non-financial commercial contributors may NOT use Metro 2 — must use Equifax's standard commercial template. Submission in wrong format will fail validation.</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:18px">
+    <div class="card-title"><div class="card-dot dot-teal"></div> What both bureaus require from every furnisher — shared minimums</div>
+    <div class="grid-2">
+      <div>
+        <div class="rule"><span class="badge badge-teal">BOTH</span><div class="rule-text">Signed Data Furnisher / Member Agreement before first submission</div></div>
+        <div class="rule"><span class="badge badge-teal">BOTH</span><div class="rule-text">Written policies and procedures for data accuracy and integrity (Reg. V §1022.42)</div></div>
+        <div class="rule"><span class="badge badge-teal">BOTH</span><div class="rule-text">Monthly reporting of full portfolio — no skipped cycles</div></div>
+        <div class="rule"><span class="badge badge-teal">BOTH</span><div class="rule-text">e-OSCAR registration and dispute response within 30 days</div></div>
+      </div>
+      <div>
+        <div class="rule"><span class="badge badge-teal">BOTH</span><div class="rule-text">Original creditor name and Creditor Classification Code in every submission</div></div>
+        <div class="rule"><span class="badge badge-teal">BOTH</span><div class="rule-text">DOFD reported within 90 days of first delinquent submission</div></div>
+        <div class="rule"><span class="badge badge-teal">BOTH</span><div class="rule-text">Identity theft block procedures and non-re-report policy</div></div>
+        <div class="rule"><span class="badge badge-teal">BOTH</span><div class="rule-text">Compliance with CDIA Credit Reporting Resource Guide® (CRRG®) — updated annually</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ STATES ═══════════════════════════ -->
+<div class="panel" id="states">
+  <div class="section-label">State-by-state restrictions — key variations from federal baseline</div>
+
+  <div class="alert alert-amber">
+    <span class="alert-icon">⚠</span>
+    <div><strong>Consumer's state of residence governs</strong> — not the state where the debt originated or where the creditor is located. Always check the consumer's current address before reporting. Track address changes that move a consumer into or out of a restricted state.</div>
+  </div>
+
+  <div class="alert alert-red">
+    <span class="alert-icon">⚡</span>
+    <div><strong>Preemption uncertainty (Oct 2025):</strong> A new CFPB interpretive rule effective Oct. 28, 2025 argues FCRA broadly preempts state credit reporting laws — replacing the 2022 narrow-preemption rule. This creates legal uncertainty around the state medical debt bans listed below. The state laws remain on the books and are being enforced at the state level. Do not ignore them until your counsel clears specific state applicability. Track monthly.</div>
+  </div>
+
+  <div class="section-label mb">Medical debt reporting bans — state-by-state</div>
+  <div class="scroll-hint">→ Scroll right for full table</div>
+  <div class="state-scroll">
+  <table class="state-tbl">
+    <thead>
+      <tr>
+        <th>State</th>
+        <th>Status</th>
+        <th>Effective date</th>
+        <th>Scope</th>
+        <th>Furnisher rule</th>
+        <th>Sales team action</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td><strong>California</strong></td><td><span class="badge badge-red">FURNISHER BAN</span></td><td>July 1, 2025</td><td>All medical debt — providers and debt collectors</td><td>Cannot furnish medical debt to any CRA</td><td>Do not report any medical account where consumer address = CA</td></tr>
+      <tr><td><strong>New York</strong></td><td><span class="badge badge-red">FULL BAN</span></td><td>2024 (chaptered)</td><td>All medical debt — licensed providers and ambulances</td><td>Cannot furnish; any furnished medical debt declared void</td><td>Do not report any medical account where consumer address = NY</td></tr>
+      <tr><td><strong>Virginia</strong></td><td><span class="badge badge-red">FURNISHER BAN</span></td><td>July 1, 2024</td><td>Health care providers and collection entities</td><td>Cannot report any portion of a medical debt to CRAs</td><td>Do not report any medical account where consumer address = VA</td></tr>
+      <tr><td><strong>Delaware</strong></td><td><span class="badge badge-red">FULL BAN</span></td><td>Oct 27, 2025</td><td>All medical debt</td><td>Cannot furnish; CRAs cannot report</td><td>Do not report — eff. Oct 2025</td></tr>
+      <tr><td><strong>Maine</strong></td><td><span class="badge badge-red">FURNISHER BAN</span></td><td>June 9, 2025</td><td>Medical creditors, debt collectors, debt buyers</td><td>Cannot furnish regardless of payment status or repayment activity</td><td>Do not report — broad — covers debt buyers</td></tr>
+      <tr><td><strong>Maryland</strong></td><td><span class="badge badge-red">FURNISHER BAN</span></td><td>Oct 1, 2025</td><td>All medical debt furnishers and CRAs</td><td>Cannot furnish; bars use in credit decisions</td><td>Do not report any medical account where consumer address = MD</td></tr>
+      <tr><td><strong>Oregon</strong></td><td><span class="badge badge-red">FURNISHER BAN</span></td><td>2025 (passed)</td><td>Medical service providers</td><td>Cannot report medical debt to any CRA</td><td>Do not report any medical account where consumer address = OR</td></tr>
+      <tr><td><strong>Washington</strong></td><td><span class="badge badge-red">FURNISHER BAN</span></td><td>2025 (passed)</td><td>Collection agencies</td><td>Cannot report medical debt to CRAs</td><td>Do not report any medical account where consumer address = WA</td></tr>
+      <tr><td><strong>Connecticut</strong></td><td><span class="badge badge-amber">CONTRACT REQ</span></td><td>July 1, 2024</td><td>Health care providers + collection entities</td><td>Provider must contractually prohibit collector from reporting</td><td>Verify your BAA/contract with referring provider includes reporting prohibition clause</td></tr>
+      <tr><td><strong>New Jersey</strong></td><td><span class="badge badge-amber">CONTRACT REQ</span></td><td>2024</td><td>Medical creditors selling debt</td><td>Cannot sell medical debt without contractual ban on CRA reporting by buyer</td><td>Verify debt purchase agreements prohibit reporting</td></tr>
+      <tr><td><strong>Rhode Island</strong></td><td><span class="badge badge-red">MEDICAL BAN</span></td><td>2025 (passed)</td><td>All medical debt</td><td>Bans medical debt reporting; also bars wage garnishment for medical debt judgments</td><td>Do not report; also note garnishment limitation in RI</td></tr>
+      <tr><td><strong>Minnesota</strong></td><td><span class="badge badge-red">FURNISHER + CRA BAN</span></td><td>Oct 1, 2024</td><td>Medical debt collectors and CRAs</td><td>Cannot furnish; CRAs cannot report</td><td>Do not report any medical account where consumer address = MN</td></tr>
+      <tr><td><strong>Illinois</strong></td><td><span class="badge badge-amber">CRA BAN</span></td><td>Jan 1, 2025</td><td>CRAs — not furnishers directly</td><td>Unlawful for CRA to create report with adverse medical debt info</td><td>Practically: Experian/Equifax will not include; confirm your submission won't cause CRA liability</td></tr>
+      <tr><td><strong>Colorado</strong></td><td><span class="badge badge-amber">CRA BAN (w/ exception)</span></td><td>Aug 7, 2023</td><td>CRAs — exception for loans &gt;$766,550</td><td>CRAs prohibited from reporting except for large credit transactions</td><td>Confirm Experian/Equifax reject CO medical submissions; include required consumer disclosure in letters</td></tr>
+      <tr><td><strong>Vermont</strong></td><td><span class="badge badge-amber">SCORE REMOVAL</span></td><td>2025</td><td>Low/moderate income consumers</td><td>Medical debt removed from credit scoring for qualifying residents</td><td>Limited practical impact on furnishing directly; monitor</td></tr>
+    </tbody>
+  </table>
+  </div>
+
+  <div class="card" style="margin-top:20px">
+    <div class="card-title"><div class="card-dot dot-blue"></div> Other notable state-level reporting restrictions</div>
+    <div class="rule"><span class="badge badge-blue">ALL STATES</span><div class="rule-text"><strong>State statute of limitations (SOL) on collecting debt</strong> — Separate from FCRA reporting limits. SOL governs when a creditor can <em>sue</em>. Ranges from 3–10 years by state and debt type. After SOL expires: debt may still be on the credit report (FCRA 7-year clock controls reporting) but is no longer legally collectible via lawsuit. Do not confuse the two clocks.</div></div>
+    <div class="rule"><span class="badge badge-blue">TEXAS</span><div class="rule-text"><strong>Wage garnishment near-prohibition</strong> — TX prohibits wage garnishment for virtually all consumer debts. Post-judgment enforcement runs through bank levies only. Reporting leverage is more important in TX than in states where garnishment is available.</div></div>
+    <div class="rule"><span class="badge badge-blue">PENNSYLVANIA</span><div class="rule-text"><strong>Wage garnishment largely prohibited</strong> — Like TX, PA restricts wage garnishment for most consumer debts. Collections strategy must rely on credit reporting and bank levies.</div></div>
+    <div class="rule"><span class="badge badge-blue">CALIFORNIA</span><div class="rule-text"><strong>California Consumer Credit Reporting Agencies Act (CCRAA)</strong> — Experian is legally required to notify all CA data furnishers of their obligations under the CCRAA. Consumers have a private right of action under CCRAA in addition to FCRA. Broader notice requirements apply.</div></div>
+    <div class="rule"><span class="badge badge-blue">MULTIPLE STATES</span><div class="rule-text"><strong>Mental health, HIV/STD, genetic data, substance use records</strong> — Most states add extra protections for these sensitive PHI categories beyond federal HIPAA. Build a state matrix for these categories if your medical portfolio includes any of these account types.</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ PROCESS ═══════════════════════════ -->
+<div class="panel" id="process">
+  <div class="section-label">Onboarding process &amp; ongoing compliance workflow</div>
+
+  <div class="section-label mb">Step-by-step: getting set up as a data furnisher</div>
+  <div class="step-row">
+    <div class="step-block"><div class="step-block-num">STEP 01</div><div class="step-block-title">Sign agreements</div>Separate Data Furnisher Agreement with Experian AND Equifax. Cannot share or cross-apply. Obtain your Equifax Reporting Member Number.</div>
+    <div class="step-block"><div class="step-block-num">STEP 02</div><div class="step-block-title">Set up Metro 2</div>Purchase/license Metro 2 compliant software (CDIA-approved). Configure Creditor Classification codes, original creditor fields, and DOFD fields. Non-financial commercial filers: Equifax requires standard template, not Metro 2.</div>
+    <div class="step-block"><div class="step-block-num">STEP 03</div><div class="step-block-title">Register e-OSCAR</div>Register at e-Oscar.org. Required by both bureaus for dispute management and off-cycle updates (AUDs/ACDVs). Training available from CDIA.</div>
+    <div class="step-block"><div class="step-block-num">STEP 04</div><div class="step-block-title">Medical furnisher notice</div>If reporting medical accounts: notify each CRA separately that you are a medical information furnisher (FCRA §623(a)(9)). Set Metro 2 Creditor Classification = "02." Encode provider name.</div>
+    <div class="step-block"><div class="step-block-num">STEP 05</div><div class="step-block-title">Test file submission</div>Submit test file to bureau data analyst. Experian: via FurnisherHub. Equifax: via eFTS. Review validation results. Correct and resubmit if needed. Do not go live until test passes.</div>
+    <div class="step-block"><div class="step-block-num">STEP 06</div><div class="step-block-title">First live cycle</div>Submit full portfolio. All accounts: current, delinquent, charged-off. Verify DOFD is present for all collection accounts. Set monthly recurring schedule.</div>
+  </div>
+
+  <div class="grid-2">
+    <div>
+      <div class="card">
+        <div class="card-title"><div class="card-dot dot-teal"></div> Monthly compliance checklist — every reporting cycle</div>
+        <div class="rule"><span class="badge badge-teal">MONTHLY</span><div class="rule-text">Submit full portfolio — every account, every cycle. Missing an account for 6+ months may result in CRA purge.</div></div>
+        <div class="rule"><span class="badge badge-teal">MONTHLY</span><div class="rule-text">Update balances, payment status, and account condition codes accurately.</div></div>
+        <div class="rule"><span class="badge badge-teal">MONTHLY</span><div class="rule-text">Check for new bankruptcies in portfolio — pause reporting on those accounts.</div></div>
+        <div class="rule"><span class="badge badge-teal">MONTHLY</span><div class="rule-text">Review medical accounts against state ban list — flag accounts where consumer moved to a ban state.</div></div>
+        <div class="rule"><span class="badge badge-teal">MONTHLY</span><div class="rule-text">Process pending e-OSCAR dispute responses — 30-day investigation deadline applies from CRA receipt date.</div></div>
+        <div class="rule"><span class="badge badge-teal">MONTHLY</span><div class="rule-text">Check DOFD age — remove any account within 30 days of hitting its 7-year (or 10-year) obsolescence date.</div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="card-dot dot-amber"></div> Dispute handling — mandatory obligations</div>
+        <div class="rule"><span class="badge badge-amber">DEADLINE</span><div class="rule-text"><strong>30 days</strong> to complete investigation after CRA forwards dispute. Extendable to 45 days only if consumer provides additional info during the period.</div></div>
+        <div class="rule"><span class="badge badge-amber">INVESTIGATE</span><div class="rule-text">Must conduct thorough investigation — cannot simply verify with your own records. Review all info provided by the CRA alongside the dispute notice.</div></div>
+        <div class="rule"><span class="badge badge-amber">REPORT BACK</span><div class="rule-text">Report investigation results to CRA. If data is inaccurate or unverifiable — modify, delete, or permanently block. Notify ALL CRAs that received the original information, not just the one that forwarded the dispute.</div></div>
+        <div class="rule"><span class="badge badge-amber">NO RE-REPORT</span><div class="rule-text">Do not re-report deleted data in the next reporting cycle without a verified basis. Fix your system of record first.</div></div>
+        <div class="rule"><span class="badge badge-amber">DOCUMENT</span><div class="rule-text">Keep full audit trail of every dispute: what came in, what was investigated, how you responded. CFPB and state AGs actively audit dispute handling.</div></div>
+      </div>
+    </div>
+
+    <div>
+      <div class="card">
+        <div class="card-title"><div class="card-dot dot-blue"></div> Sales team quick-reference — account acceptance decision tree</div>
+        <div class="tl-item"><div class="tl-num">Q1</div><div class="tl-content"><div class="tl-title">Does the debt arise from a contract or voluntary agreement to pay?</div><div class="tl-body"><strong>No →</strong> Do not accept for reporting. (Traffic tickets, fines, municipal fees.)<br><strong>Yes →</strong> Proceed to Q2.</div></div></div>
+        <div class="tl-item"><div class="tl-num">Q2</div><div class="tl-content"><div class="tl-title">Is the account within the FCRA reporting window?</div><div class="tl-body"><strong>No (past 7 years from DOFD) →</strong> Cannot report. May still be collectible if within state SOL.<br><strong>Yes →</strong> Proceed to Q3.</div></div></div>
+        <div class="tl-item"><div class="tl-num">Q3</div><div class="tl-content"><div class="tl-title">Is this a medical account?</div><div class="tl-body"><strong>Yes →</strong> Check: (a) Is consumer in a ban state? → Do not report. (b) Has 1 year elapsed from date of service/DOFD? → If not, hold. (c) Is balance &gt;$500 and unpaid? → Eligible if ban state cleared. Register as medical furnisher. Encode provider.<br><strong>No →</strong> Proceed to Q4.</div></div></div>
+        <div class="tl-item"><div class="tl-num">Q4</div><div class="tl-content"><div class="tl-title">Has the consumer filed for bankruptcy?</div><div class="tl-body"><strong>Yes →</strong> Pause all reporting on included accounts. Record case number. Resume only after discharge/dismissal order.<br><strong>No →</strong> Proceed to Q5.</div></div></div>
+        <div class="tl-item"><div class="tl-num">Q5</div><div class="tl-content"><div class="tl-title">Do you have the original creditor name and DOFD?</div><div class="tl-body"><strong>No →</strong> Obtain from placing creditor before submitting. Missing = bureau rejection.<br><strong>Yes →</strong> Account is eligible to report. Submit in next monthly cycle.</div></div></div>
+      </div>
+
+      <div class="card">
+        <div class="card-title"><div class="card-dot dot-gray"></div> Enforcement — who is watching and what are the penalties</div>
+        <div class="rule"><span class="badge badge-red">CFPB</span><div class="rule-text">Max $4,983 per violation. Active 2025 enforcement focus on FCRA despite workforce cuts. Active lawsuit against Experian for dispute failures.</div></div>
+        <div class="rule"><span class="badge badge-red">FTC</span><div class="rule-text">Retains enforcement authority for non-bank entities. March 2026 FCRA revision published — review for any new provisions.</div></div>
+        <div class="rule"><span class="badge badge-red">STATE AGS</span><div class="rule-text">All 50 states have independent enforcement authority. Medical debt ban state AGs actively enforce. CA, NY especially active.</div></div>
+        <div class="rule"><span class="badge badge-red">PRIVATE SUIT</span><div class="rule-text">Consumers: actual damages + statutory damages ($100–$1,000/violation) + punitive damages (willful) + attorney fees. SOL: 2 years from discovery or 5 years from violation. Attorneys take on contingency.</div></div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+</div><!-- end main -->
+
+<div class="footer">
+  <div>SW Recovery · Internal use only · Not legal advice</div>
+  <div>Sources: FCRA (FTC, March 2026 ed.) · NCAP · HHS HIPAA · Experian Furnisher Requirements (verified direct, July 2026) · Equifax Data Furnisher FAQ &amp; Guidebook (verified direct, July 2026) · CFPB Regulation V · State statutes</div>
+  <div>Review quarterly — regulatory landscape active · Last direct bureau-site verification: July 2026</div>
+</div>
+
+<script>
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+</script>
+
+</body>
+</html>
