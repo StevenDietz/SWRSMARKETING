@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SW Recovery — Sales Guideline: What Can & Cannot Be Reported</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Fira+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap');
+
+  :root {
+    --navy: #070731;
+    --navy-mid: #070b97;
+    --navy-light: #16225c;
+    --teal: #0495f1;
+    --teal-dim: #0446f1;
+    --amber: #f5a623;
+    --red: #e5464a;
+    --green: #2ec97e;
+    --blue: #4a90d9;
+    --white: #f7fafd;
+    --muted: #8fa5be;
+    --border: rgba(255,255,255,0.08);
+    --surface: rgba(255,255,255,0.04);
+    --surface-hover: rgba(255,255,255,0.07);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Fira Sans', sans-serif;
+    background: var(--navy);
+    color: var(--white);
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, #0a1520 0%, #1a2e47 100%);
+    border-bottom: 1px solid var(--teal);
+    padding: 28px 40px 24px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 20px;
+  }
+  .header-left { flex: 1; }
+  .header-logo {
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--teal);
+    margin-bottom: 6px;
+    font-family: 'Fira Code', monospace;
+  }
+  .header-title {
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--white);
+    line-height: 1.2;
+  }
+  .header-sub {
+    font-size: 12px;
+    color: var(--muted);
+    margin-top: 4px;
+  }
+  .header-meta {
+    text-align: right;
+    font-size: 11px;
+    font-family: 'Fira Code', monospace;
+    color: var(--muted);
+    line-height: 1.8;
+  }
+  .header-meta span { color: var(--white); }
+
+  /* NAV */
+  .nav {
+    background: var(--navy-mid);
+    border-bottom: 1px solid var(--border);
+    padding: 0 40px;
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  .nav::-webkit-scrollbar { display: none; }
+  .nav-btn {
+    padding: 13px 18px;
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--muted);
+    background: none;
+    border: none;
+    border-bottom: 2px solid transparent;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .15s;
+    font-family: 'Fira Sans', sans-serif;
+  }
+  .nav-btn:hover { color: var(--white); background: var(--surface); }
+  .nav-btn.active { color: var(--teal); border-bottom-color: var(--teal); }
+
+  /* LAYOUT */
+  .main { padding: 28px 40px; max-width: 1100px; }
+  .panel { display: none; }
+  .panel.active { display: block; }
+
+  /* SECTION */
+  .section-label {
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-family: 'Fira Code', monospace;
+    margin-bottom: 14px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+  }
+  .mb { margin-bottom: 24px; }
+
+  /* ALERT BANNERS */
+  .alert {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 12.5px;
+    line-height: 1.55;
+    margin-bottom: 18px;
+    border-left: 3px solid;
+  }
+  .alert-icon { font-size: 16px; flex-shrink: 0; margin-top: 1px; }
+  .alert-red { background: rgba(229,70,74,0.1); border-color: var(--red); color: #f9b4b5; }
+  .alert-amber { background: rgba(245,166,35,0.1); border-color: var(--amber); color: #fbd48a; }
+  .alert-teal { background: rgba(0,196,160,0.1); border-color: var(--teal); color: #7eecd8; }
+  .alert-blue { background: rgba(74,144,217,0.1); border-color: var(--blue); color: #a0c8f0; }
+  .alert strong { color: var(--white); }
+
+  /* CARDS */
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 16px 18px;
+    margin-bottom: 14px;
+  }
+  .card-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--white);
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .card-dot {
+    width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+  }
+  .dot-green { background: var(--green); }
+  .dot-red { background: var(--red); }
+  .dot-amber { background: var(--amber); }
+  .dot-blue { background: var(--blue); }
+  .dot-teal { background: var(--teal); }
+  .dot-gray { background: var(--muted); }
+
+  /* RULE ROWS */
+  .rule { display: flex; gap: 10px; align-items: flex-start; padding: 6px 0; border-bottom: 1px solid var(--border); }
+  .rule:last-child { border-bottom: none; }
+  .rule-text { font-size: 12.5px; color: #b0c5d8; line-height: 1.5; }
+  .rule-text strong { color: var(--white); font-weight: 500; }
+  .rule-text code { font-family: 'Fira Code', monospace; font-size: 11px; background: rgba(0,196,160,0.12); color: var(--teal); padding: 1px 5px; border-radius: 3px; }
+
+  /* BADGES */
+  .badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    padding: 2px 7px;
+    border-radius: 4px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-family: 'Fira Code', monospace;
+    letter-spacing: .03em;
+  }
+  .badge-green { background: rgba(46,201,126,0.15); color: var(--green); border: 1px solid rgba(46,201,126,0.3); }
+  .badge-red { background: rgba(229,70,74,0.15); color: #f28080; border: 1px solid rgba(229,70,74,0.3); }
+  .badge-amber { background: rgba(245,166,35,0.15); color: var(--amber); border: 1px solid rgba(245,166,35,0.3); }
+  .badge-blue { background: rgba(74,144,217,0.15); color: #7ab8f0; border: 1px solid rgba(74,144,217,0.3); }
+  .badge-teal { background: rgba(0,196,160,0.15); color: var(--teal); border: 1px solid rgba(0,196,160,0.3); }
+  .badge-gray { background: rgba(143,165,190,0.12); color: var(--muted); border: 1px solid rgba(143,165,190,0.2); }
+  .badge-navy { background: rgba(255,255,255,0.06); color: var(--white); border: 1px solid var(--border); }
+
+  /* GRID */
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+  @media(max-width:700px){ .grid-2,.grid-3 { grid-template-columns: 1fr; } }
+
+  /* MASTER TABLE */
+  .master-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .master-table th {
+    text-align: left;
+    padding: 9px 12px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-family: 'Fira Code', monospace;
+    border-bottom: 1px solid var(--teal);
+    background: rgba(0,196,160,0.05);
+    white-space: nowrap;
+  }
+  .master-table td {
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+    color: #b0c5d8;
+    vertical-align: top;
+    line-height: 1.45;
+  }
+  .master-table tr:hover td { background: var(--surface-hover); }
+  .master-table td strong { color: var(--white); font-weight: 500; }
+  .master-table td code { font-family: 'Fira Code', monospace; font-size: 10.5px; color: var(--teal); }
+
+  /* BUREAU COMPARE */
+  .bureau-split { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+  @media(max-width:600px){ .bureau-split { grid-template-columns: 1fr; } }
+  .bureau-card {
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--border);
+  }
+  .bureau-header {
+    padding: 12px 16px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+  .bureau-header-exp { background: linear-gradient(90deg, #1a1060, #2d1a80); color: #b0a0f8; border-bottom: 2px solid #6050c0; }
+  .bureau-header-eq { background: linear-gradient(90deg, #0d2a1a, #0d3b22); color: #70d0a0; border-bottom: 2px solid #1a8050; }
+  .bureau-body { padding: 14px 16px; background: var(--surface); }
+
+  /* TIMELINE */
+  .tl-item { display: flex; gap: 14px; padding: 10px 0; border-bottom: 1px solid var(--border); align-items: flex-start; }
+  .tl-item:last-child { border-bottom: none; }
+  .tl-num { font-family: 'Fira Code', monospace; font-size: 11px; font-weight: 600; color: var(--teal); min-width: 28px; padding-top: 2px; }
+  .tl-content { flex: 1; }
+  .tl-title { font-size: 13px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+  .tl-body { font-size: 12px; color: #8fa5be; line-height: 1.5; }
+  .tl-body strong { color: #d0dff0; font-weight: 500; }
+
+  /* STATE TABLE */
+  .state-scroll { overflow-x: auto; }
+  .state-tbl { width: 100%; border-collapse: collapse; font-size: 11.5px; min-width: 700px; }
+  .state-tbl th {
+    padding: 8px 10px;
+    text-align: left;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: .08em;
+    text-transform: uppercase;
+    color: var(--teal);
+    font-family: 'Fira Code', monospace;
+    border-bottom: 1px solid var(--teal);
+    background: rgba(0,196,160,0.05);
+    white-space: nowrap;
+  }
+  .state-tbl td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    color: #b0c5d8;
+    vertical-align: top;
+    line-height: 1.4;
+  }
+  .state-tbl tr:hover td { background: var(--surface-hover); }
+  .state-tbl td strong { color: var(--white); }
+
+  /* CLOCK CARDS */
+  .clock-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+  .clock-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px 16px;
+  }
+  .clock-industry {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    font-family: 'Fira Code', monospace;
+    margin-bottom: 8px;
+    color: var(--teal);
+  }
+  .clock-num { font-size: 28px; font-weight: 600; color: var(--white); line-height: 1; }
+  .clock-unit { font-size: 11px; color: var(--muted); margin-bottom: 6px; }
+  .clock-note { font-size: 11.5px; color: #8fa5be; line-height: 1.45; }
+  .clock-note strong { color: #c0d4e8; font-weight: 500; }
+  .clock-flag {
+    display: inline-block;
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    font-family: 'Fira Code', monospace;
+    font-weight: 600;
+    letter-spacing: .05em;
+    margin-top: 6px;
+  }
+
+  /* FOOTER */
+  .footer {
+    margin-top: 40px;
+    padding: 20px 40px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--muted);
+    font-family: 'Fira Code', monospace;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+  }
+
+  /* SCROLL HINT */
+  .scroll-hint { font-size: 10px; color: var(--muted); font-family: 'Fira Code', monospace; margin-bottom: 8px; }
+
+  /* PILL ROW */
+  .pill-row { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 8px; }
+  .pill {
+    font-size: 11px;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-family: 'Fira Code', monospace;
+    font-weight: 500;
+  }
+  .pill-green { background: rgba(46,201,126,0.1); color: var(--green); border: 1px solid rgba(46,201,126,0.25); }
+  .pill-red { background: rgba(229,70,74,0.1); color: #f28080; border: 1px solid rgba(229,70,74,0.25); }
+  .pill-amber { background: rgba(245,166,35,0.1); color: var(--amber); border: 1px solid rgba(245,166,35,0.25); }
+  .pill-gray { background: rgba(143,165,190,0.08); color: var(--muted); border: 1px solid rgba(143,165,190,0.18); }
+
+  /* STEP */
+  .step-row { display: flex; gap: 0; margin-bottom: 20px; flex-wrap: nowrap; overflow-x: auto; }
+  .step-block {
+    flex: 1;
+    min-width: 120px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-right: none;
+    padding: 12px 14px;
+    font-size: 11.5px;
+    color: #8fa5be;
+    line-height: 1.45;
+    position: relative;
+  }
+  .step-block:first-child { border-radius: 8px 0 0 8px; }
+  .step-block:last-child { border-right: 1px solid var(--border); border-radius: 0 8px 8px 0; }
+  .step-block-num { font-size: 10px; font-weight: 600; color: var(--teal); font-family: 'Fira Code', monospace; margin-bottom: 4px; letter-spacing: .06em; }
+  .step-block-title { font-size: 12px; font-weight: 600; color: var(--white); margin-bottom: 3px; }
+
+  /* DO / DONT SAY */
+  .saysplit { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+  @media(max-width:700px){ .saysplit { grid-template-columns: 1fr; } }
+  .say-card { border-radius: 10px; overflow: hidden; border: 1px solid var(--border); }
+  .say-header { padding: 10px 16px; font-size: 12px; font-weight: 700; letter-spacing: .04em; display:flex; align-items:center; gap:8px; }
+  .say-header-do { background: rgba(46,201,126,0.12); color: var(--green); border-bottom: 2px solid var(--green); }
+  .say-header-dont { background: rgba(229,70,74,0.12); color: #f28080; border-bottom: 2px solid var(--red); }
+  .say-body { padding: 14px 16px; background: var(--surface); }
+  .say-line { font-size: 12.5px; color: #c5d5e5; line-height: 1.55; padding: 7px 0; border-bottom: 1px solid var(--border); }
+  .say-line:last-child { border-bottom: none; }
+  .say-line em { color: var(--muted); font-style: italic; }
+
+  /* MYTH VS REALITY */
+  .myth-card { background: var(--surface); border: 1px solid var(--border); border-radius: 10px; margin-bottom: 14px; overflow: hidden; }
+  .myth-row { display: flex; gap: 0; }
+  @media(max-width:700px){ .myth-row { flex-direction: column; } }
+  .myth-half { flex: 1; padding: 14px 18px; }
+  .myth-half-myth { background: rgba(229,70,74,0.06); border-right: 1px solid var(--border); }
+  .myth-half-reality { background: rgba(46,201,126,0.06); }
+  @media(max-width:700px){ .myth-half-myth { border-right: none; border-bottom: 1px solid var(--border); } }
+  .myth-label { font-size: 9.5px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-family: 'Fira Code', monospace; margin-bottom: 6px; }
+  .myth-label-myth { color: #f28080; }
+  .myth-label-reality { color: var(--green); }
+  .myth-text { font-size: 12.5px; color: #c5d5e5; line-height: 1.55; }
+  .myth-quote { font-size: 13px; color: var(--white); font-style: italic; margin-bottom: 8px; }
+
+  /* ESCALATE CARD */
+  .escalate-card { border: 1px solid rgba(245,166,35,0.35); background: rgba(245,166,35,0.06); border-radius: 10px; padding: 14px 18px; margin-bottom: 12px; }
+  .escalate-title { font-size: 13px; font-weight: 700; color: var(--amber); margin-bottom: 6px; }
+
+  /* SEARCH BOX */
+  .search-wrap { margin-bottom: 20px; }
+  .search-input {
+    width: 100%; padding: 12px 16px; border-radius: 8px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--white); font-family: 'Fira Sans', sans-serif; font-size: 13px;
+  }
+  .search-input:focus { outline: none; border-color: var(--teal); }
+  .search-input::placeholder { color: var(--muted); }
+  .faq-item { display: none; }
+  .faq-item.faq-visible { display: block; }
+
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <img src="/swrs-logo-white.svg" alt="Southwest Recovery Services" style="height:22px;width:auto;display:block;margin-bottom:8px;"><div class="header-logo">Internal Sales Resource</div>
+    <div class="header-title">What Can & Cannot Be Reported to the Credit Bureaus</div>
+    <div class="header-sub">A fortified quick-reference for sales conversations — verified direct against Experian &amp; Equifax, July 2026</div>
+  </div>
+  <div class="header-meta">
+    Updated <span>July 2026</span><br>
+    Audience <span>Sales &amp; Client-Facing Staff</span><br>
+    Companion to <span>Data Furnisher Reporting Roadmap</span>
+  </div>
+</div>
+
+<div class="nav">
+  <button class="nav-btn active" onclick="showPanel('quick')">Quick answers</button>
+  <button class="nav-btn" onclick="showPanel('myths')">Myths vs. reality</button>
+  <button class="nav-btn" onclick="showPanel('talktrack')">Talk track</button>
+  <button class="nav-btn" onclick="showPanel('escalate')">Escalate to compliance</button>
+  <button class="nav-btn" onclick="showPanel('faq')">Searchable FAQ</button>
+</div>
+
+<div class="main">
+
+<!-- ═══════════════════════════ QUICK ANSWERS ═══════════════════════════ -->
+<div class="panel active" id="quick">
+  <div class="section-label">The 30-second answer, by debt type</div>
+
+  <div class="alert alert-teal">
+    <span class="alert-icon">★</span>
+    <div><strong>How to use this tab:</strong> This is the version you can say out loud on a call without a compliance review. If a debt type shows <span style="color:var(--amber)">CONDITIONAL</span> or isn't listed here, use the Talk Track tab for safe language, and loop in compliance before quoting a firm answer to the client.</div>
+  </div>
+
+  <div class="grid-3">
+    <div class="card">
+      <div class="card-title"><div class="card-dot dot-green"></div> Reports cleanly, no real friction</div>
+      <div class="rule"><span class="badge badge-green">YES</span><div class="rule-text">Credit cards, personal loans, auto loans, mortgages</div></div>
+      <div class="rule"><span class="badge badge-green">YES</span><div class="rule-text">Private &amp; federal student loans</div></div>
+      <div class="rule"><span class="badge badge-green">YES</span><div class="rule-text">Telecom / wireless / cable</div></div>
+      <div class="rule"><span class="badge badge-green">YES</span><div class="rule-text">Rent / lease arrears (contractual)</div></div>
+      <div class="rule"><span class="badge badge-green">YES</span><div class="rule-text">Charged-off accounts</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><div class="card-dot dot-amber"></div> Reportable, but conditions apply</div>
+      <div class="rule"><span class="badge badge-amber">WAIT</span><div class="rule-text">Medical debt — 1 year from date of service, remove if paid, excluded if under $500</div></div>
+      <div class="rule"><span class="badge badge-amber">CHECK</span><div class="rule-text">Utilities — some bureaus want 90+ days past due</div></div>
+      <div class="rule"><span class="badge badge-amber">CHECK</span><div class="rule-text">HOA assessments — Equifax yes, Experian confirm per portfolio</div></div>
+      <div class="rule"><span class="badge badge-amber">PLACE FIRST</span><div class="rule-text">Gym / membership fees — not reportable if the gym self-furnishes; reportable once placed with us as a collection tradeline</div></div>
+      <div class="rule"><span class="badge badge-amber">STATE CHECK</span><div class="rule-text">Medical debt in 15+ ban states — never for those consumers</div></div>
+    </div>
+    <div class="card">
+      <div class="card-title"><div class="card-dot dot-red"></div> Cannot be reported, period</div>
+      <div class="rule"><span class="badge badge-red">NO</span><div class="rule-text">Civil judgments (removed 2017–2018, all 3 bureaus)</div></div>
+      <div class="rule"><span class="badge badge-red">NO</span><div class="rule-text">Tax liens (removed 2017–2018, all 3 bureaus)</div></div>
+      <div class="rule"><span class="badge badge-red">NO</span><div class="rule-text">Parking tickets, traffic fines, court fees (non-contractual)</div></div>
+      <div class="rule"><span class="badge badge-red">NO</span><div class="rule-text">Paid medical debt, medical debt under $500</div></div>
+      <div class="rule"><span class="badge badge-red">NO</span><div class="rule-text">"Pay for tradeline" schemes, self-reported tradelines</div></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:6px">
+    <div class="card-title"><div class="card-dot dot-blue"></div> The one distinction that resolves most client confusion</div>
+    <div class="rule"><span class="badge badge-blue">KEY POINT</span><div class="rule-text"><strong>"Can't be reported" almost always means "can't be reported by the original creditor" — not "can't be reported at all."</strong> Equifax's own furnisher rules block gyms, and some other future-services businesses, from self-furnishing their own open accounts. Once SW Recovery takes the placement, we furnish it as a standard collection tradeline, which is a completely different category and is routinely accepted. This is the single most useful thing to say to a hesitant client.</div></div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ MYTHS VS REALITY ═══════════════════════════ -->
+<div class="panel" id="myths">
+  <div class="section-label">What clients have heard vs. what's actually true</div>
+
+  <div class="myth-card">
+    <div class="myth-row">
+      <div class="myth-half myth-half-myth">
+        <div class="myth-label myth-label-myth">What the client heard</div>
+        <div class="myth-quote">"I heard gym memberships can't be reported to credit bureaus anymore."</div>
+        <div class="myth-text">Partly true, badly explained. This is the #1 objection in fitness-industry sales conversations.</div>
+      </div>
+      <div class="myth-half myth-half-reality">
+        <div class="myth-label myth-label-reality">The reality</div>
+        <div class="myth-text">Equifax's furnisher rules block <strong>the gym itself</strong> from self-furnishing an open membership account — it's categorized as "future services," same bucket as some subscription products. That has nothing to do with what happens after the account is placed with SW Recovery. Once we take it, it's a standard third-party collection tradeline, and both bureaus accept those every day. The fix isn't "give up on reporting" — it's "place the account with us instead of trying to furnish it yourselves."</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="myth-card">
+    <div class="myth-row">
+      <div class="myth-half myth-half-myth">
+        <div class="myth-label myth-label-myth">What the client heard</div>
+        <div class="myth-quote">"I got a judgment against my ex-tenant / former customer — that'll wreck their credit."</div>
+        <div class="myth-text">Was true before 2017. Not true today.</div>
+      </div>
+      <div class="myth-half myth-half-reality">
+        <div class="myth-label myth-label-reality">The reality</div>
+        <div class="myth-text">All three bureaus stopped showing civil judgments and tax liens in 2017–2018 (NCAP data-accuracy standard — most judgment records don't carry the SSN/DOB the bureaus now require). The judgment is still fully enforceable in court, but it will never show up on a credit report. Redirect the conversation to the underlying debt: <em>the debt itself is reportable as a collection tradeline, separate from the judgment.</em></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="myth-card">
+    <div class="myth-row">
+      <div class="myth-half myth-half-myth">
+        <div class="myth-label myth-label-myth">What the client heard</div>
+        <div class="myth-quote">"They still owe us for that medical bill — let's report it right away."</div>
+        <div class="myth-text">Timing matters a lot more than clients expect.</div>
+      </div>
+      <div class="myth-half myth-half-reality">
+        <div class="myth-label myth-label-reality">The reality</div>
+        <div class="myth-text">Medical debt has a mandatory <strong>one-year wait from date of service</strong> before it can appear (raised from 6 months in 2022) — and once paid, it comes off immediately, and balances under $500 don't get reported at all. Don't promise fast medical-debt reporting; set the expectation up front that it's a slower category by design.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="myth-card">
+    <div class="myth-row">
+      <div class="myth-half myth-half-myth">
+        <div class="myth-label myth-label-myth">What the client heard</div>
+        <div class="myth-quote">"My state doesn't have medical debt reporting bans, so we're fine everywhere."</div>
+        <div class="myth-text">Client is thinking about their state — but their state doesn't control this.</div>
+      </div>
+      <div class="myth-half myth-half-reality">
+        <div class="myth-label myth-label-reality">The reality</div>
+        <div class="myth-text">It's the <strong>consumer's state of residence</strong> that governs, not the business's state. A Texas-based operator with patients or customers who live in California, New York, or one of the 15 medical-debt-ban states cannot report those specific accounts, even though Texas has no such ban. Always ask where the individual consumer lives, not just where the business operates.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ TALK TRACK ═══════════════════════════ -->
+<div class="panel" id="talktrack">
+  <div class="section-label">Safe language for common client questions</div>
+
+  <div class="alert alert-amber">
+    <span class="alert-icon">⚠</span>
+    <div>Sales conversations are representations the company can be held to. When in doubt, use the "Don't Say" column's safer alternative and route specifics to compliance rather than improvising.</div>
+  </div>
+
+  <div class="saysplit">
+    <div class="say-card">
+      <div class="say-header say-header-do">✓ SAY THIS</div>
+      <div class="say-body">
+        <div class="say-line">"Once we place the account, we report it to the major credit bureaus as a standard collection tradeline, following all FCRA requirements."</div>
+        <div class="say-line">"For medical accounts, there's a required waiting period before we can report — usually about a year from the date of service — and that's a bureau-wide rule, not something we control."</div>
+        <div class="say-line">"Reporting depends on where your customer lives, not just where your business is — we check that on every account before placing it."</div>
+        <div class="say-line">"A judgment doesn't show up on a credit report anymore, but the underlying debt itself still can be reported as a collection account — that's actually the more effective lever today."</div>
+        <div class="say-line">"We can't guarantee an exact date an account will appear on a credit file — that's ultimately the bureau's process — but we'll confirm it's been furnished correctly."</div>
+      </div>
+    </div>
+    <div class="say-card">
+      <div class="say-header say-header-dont">✕ DON'T SAY THIS</div>
+      <div class="say-body">
+        <div class="say-line">"We'll guarantee this hits their credit report within [X] days." <em>— Furnishing timing depends on the bureau's cycle; don't promise a date.</em></div>
+        <div class="say-line">"This will destroy their credit." <em>— Avoid characterizing the severity of impact; we don't control scoring models.</em></div>
+        <div class="say-line">"Judgments used to show up but now nothing from court cases ever affects credit." <em>— Overstated; bankruptcy is still reported, and the underlying debt is separately reportable.</em></div>
+        <div class="say-line">"Every state's the same on this." <em>— Fifteen-plus states restrict medical debt reporting by consumer residence; never say state doesn't matter.</em></div>
+        <div class="say-line">"Just report it yourselves, it's easy." <em>— For future-services debts like gym memberships, self-furnishing is likely to be rejected; always route through placement instead.</em></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ ESCALATE TO COMPLIANCE ═══════════════════════════ -->
+<div class="panel" id="escalate">
+  <div class="section-label">Situations to route to compliance before quoting a firm answer</div>
+
+  <div class="escalate-card">
+    <div class="escalate-title">Consumer lives in a medical-debt-ban state</div>
+    <div class="rule-text" style="color:#c5d5e5">CA, CO, CT, DE, IL, ME, MD, MN, NJ, NY, OR, RI, VT, VA, WA — and this list changes as new state laws take effect. Do not confirm reportability yourself; verify current list with compliance.</div>
+  </div>
+  <div class="escalate-card">
+    <div class="escalate-title">Client wants to self-furnish a future-services debt (gym, subscription, similar)</div>
+    <div class="rule-text" style="color:#c5d5e5">Explain the original-creditor exclusion generally, but don't quote Equifax/Experian policy specifics from memory — confirm current furnisher rules with compliance, since bureau policy can change without notice.</div>
+  </div>
+  <div class="escalate-card">
+    <div class="escalate-title">Client asks about a debt type not covered in Quick Answers</div>
+    <div class="rule-text" style="color:#c5d5e5">BNPL, child support/alimony, HOA fines vs. assessments, government fines, substance-use or behavioral health accounts — all have nuances that need a compliance-verified answer, not an improvised one.</div>
+  </div>
+  <div class="escalate-card">
+    <div class="escalate-title">Client wants a specific timeline commitment</div>
+    <div class="rule-text" style="color:#c5d5e5">We can describe the process; we cannot promise a specific date an item will post to a credit file. Route firm timeline questions to account management.</div>
+  </div>
+  <div class="escalate-card">
+    <div class="escalate-title">Client references a law firm, contract dispute, or bankruptcy on the account</div>
+    <div class="rule-text" style="color:#c5d5e5">Any account with active legal representation, a disputed contract, or a bankruptcy filing needs compliance/legal review before any reporting commitment is made.</div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════ SEARCHABLE FAQ ═══════════════════════════ -->
+<div class="panel" id="faq">
+  <div class="section-label">Searchable quick answers</div>
+
+  <div class="search-wrap">
+    <input type="text" class="search-input" id="faqSearch" placeholder="Type a keyword — e.g. 'medical', 'judgment', 'gym', 'state'..." onkeyup="filterFAQ()">
+  </div>
+
+  <div id="faqList">
+    <div class="card faq-item faq-visible" data-keywords="medical debt wait time year">
+      <div class="card-title"><div class="card-dot dot-amber"></div> How long do we have to wait before reporting a medical debt?</div>
+      <div class="rule-text" style="color:#c5d5e5">One full year from the date of service (increased from 6 months in July 2022), and only if the balance is $500 or more and unpaid. Paid medical debt is never reported.</div>
+    </div>
+    <div class="card faq-item faq-visible" data-keywords="gym membership future services fitness">
+      <div class="card-title"><div class="card-dot dot-amber"></div> Why can't a gym report its own membership debt?</div>
+      <div class="rule-text" style="color:#c5d5e5">Equifax classifies gym memberships as "future services" data and excludes it from original-creditor furnishing. It becomes reportable once assigned to SW Recovery as a collection tradeline.</div>
+    </div>
+    <div class="card faq-item faq-visible" data-keywords="judgment court lawsuit civil">
+      <div class="card-title"><div class="card-dot dot-red"></div> Can we report a civil judgment?</div>
+      <div class="rule-text" style="color:#c5d5e5">No. All three bureaus removed civil judgments from consumer credit reports in 2017–2018 and have not reversed this. The underlying debt can still be reported separately as a collection account.</div>
+    </div>
+    <div class="card faq-item faq-visible" data-keywords="tax lien irs state">
+      <div class="card-title"><div class="card-dot dot-red"></div> Can we report a tax lien?</div>
+      <div class="rule-text" style="color:#c5d5e5">No. Removed by all three bureaus by April 2018, same reasoning as civil judgments (missing required SSN/DOB data).</div>
+    </div>
+    <div class="card faq-item faq-visible" data-keywords="parking ticket ticket fine government municipal non-contractual">
+      <div class="card-title"><div class="card-dot dot-red"></div> Can we report a parking ticket or municipal fine?</div>
+      <div class="rule-text" style="color:#c5d5e5">Generally no — these are non-contractual debts under NCAP policy. Experian's own consumer materials note small collections over $100 occasionally still appear, so treat this as a case-by-case compliance question rather than an absolute.</div>
+    </div>
+    <div class="card faq-item faq-visible" data-keywords="state medical ban california new york">
+      <div class="card-title"><div class="card-dot dot-amber"></div> Does it matter what state the business is in?</div>
+      <div class="rule-text" style="color:#c5d5e5">No — what matters is the consumer's state of residence. A business in a state with no medical-debt ban can still be blocked from reporting a specific consumer's medical debt if that consumer lives in a ban state.</div>
+    </div>
+    <div class="card faq-item faq-visible" data-keywords="pay for tradeline self report fraud">
+      <div class="card-title"><div class="card-dot dot-red"></div> Can a business pay to have a tradeline added, or report itself?</div>
+      <div class="rule-text" style="color:#c5d5e5">No. Both bureaus explicitly prohibit "pay for tradeline" schemes and furnishers reporting tradelines on themselves.</div>
+    </div>
+    <div class="card faq-item faq-visible" data-keywords="hoa assessment fine condo">
+      <div class="card-title"><div class="card-dot dot-amber"></div> What about HOA fees?</div>
+      <div class="rule-text" style="color:#c5d5e5">Assessments (the actual dues) are reportable and Equifax explicitly accepts them; fines and penalties are not, since they're non-contractual. Confirm Experian acceptance per portfolio.</div>
+    </div>
+    <div class="card faq-item faq-visible" data-keywords="bankruptcy chapter 7 13">
+      <div class="card-title"><div class="card-dot dot-green"></div> What happens to reporting if the consumer files bankruptcy?</div>
+      <div class="rule-text" style="color:#c5d5e5">All collection reporting on included accounts must pause immediately once bankruptcy is filed and disclosed. Bankruptcy itself remains the one public record still reported by all three bureaus.</div>
+    </div>
+    <div class="card faq-item faq-visible" data-keywords="timeline date guarantee when">
+      <div class="card-title"><div class="card-dot dot-blue"></div> Can we promise a client an exact date their account will appear?</div>
+      <div class="rule-text" style="color:#c5d5e5">No — never commit to a specific posting date. We can confirm correct and timely furnishing on our end, but the bureau's own processing cycle determines when it appears.</div>
+    </div>
+  </div>
+
+  <div id="faqNoResults" style="display:none; color:var(--muted); font-size:13px; padding:20px 0;">No matches — try a different keyword, or check the Escalate to Compliance tab.</div>
+</div>
+
+</div><!-- end main -->
+
+<div class="footer">
+  <div>SW Recovery · Internal use only · Not legal advice · For client-facing conversations, not verbatim contract language</div>
+  <div>Companion to the Data Furnisher Reporting Roadmap · Verified direct against Experian &amp; Equifax sites, July 2026</div>
+  <div>When a client's question isn't covered here, escalate — don't improvise</div>
+</div>
+
+<script>
+function showPanel(id) {
+  document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function filterFAQ() {
+  const query = document.getElementById('faqSearch').value.toLowerCase().trim();
+  const items = document.querySelectorAll('#faqList .faq-item');
+  let anyVisible = false;
+  items.forEach(item => {
+    const keywords = item.getAttribute('data-keywords') || '';
+    const text = item.textContent.toLowerCase();
+    const matches = query === '' || keywords.includes(query) || text.includes(query);
+    item.classList.toggle('faq-visible', matches);
+    if (matches) anyVisible = true;
+  });
+  document.getElementById('faqNoResults').style.display = anyVisible ? 'none' : 'block';
+}
+</script>
+
+</body>
+</html>
